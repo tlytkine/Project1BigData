@@ -20,7 +20,6 @@ simplifiedGraph <- simplify(edgesGraph,remove.multiple=TRUE,remove.loops = TRUE,
 # is graph simple?
 is_simple(simplifiedGraph)
 
-
 # Convert edges to matrix
 em <-as.matrix(edges1)
 
@@ -28,7 +27,7 @@ graph_from_adjacency_matrix(em,mode=c("directed"))
 
 
 # First 1000 rows of the data as a matrix
-rows <- em[0:10,]
+rows <- em[0:1000,]
 
 # Show the rows 
 rows
@@ -59,10 +58,10 @@ ego[1:3]
 closeness(ego)
 
 # Get vertices from first column
-v1 <- rows[0:10,1]
+v1 <- rows[0:1000,1]
 
 # Get vertices from second column 
-v2 <- rows[0:10,2]
+v2 <- rows[0:1000,2]
 
 # Show v1
 v1
@@ -112,6 +111,7 @@ is.simple(g)
 # into a subgraph and including the edge weight
 # into plot (next slide)
 sg <- induced.subgraph(g,which(V(g)$weight > 0.1))
+sg
 
 # Plot subgraph
 plot(sg,edge.label=round(E(sg)$weight,3))
@@ -187,4 +187,10 @@ em.df
 
 # k means clustering 
 kc <- kmeans(em.df,3,nstart=5)
+
+
+
+
+
+
 
