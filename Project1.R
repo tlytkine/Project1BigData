@@ -26,6 +26,7 @@ em <-as.matrix(edges1)
 
 # First 1000 rows of the data as a matrix
 rows <- em[0:1000,]
+allRows <- em[0:5533214,]
 
 # Show the rows 
 rows
@@ -57,9 +58,11 @@ closeness(ego)
 
 # Get vertices from first column
 v1 <- rows[0:1000,1]
+allV1 <- allRows[0:5533214,1]
 
 # Get vertices from second column 
 v2 <- rows[0:1000,2]
+allV2 <- allRows[0:5533214,2]
 
 # Show v1
 v1
@@ -69,9 +72,17 @@ v2
 
 # Get relations 
 relations <- data.frame(from=v1,to=v2)  
+allRelations <- data.frame(from=allV1,to=allV2)
 
 # Get graph data frame 
 g <- graph.data.frame(relations,directed=TRUE)
+
+allG <- graph.data.frame(allRelations,directed=TRUE)
+
+# Simplify graph with all rows 
+simpAll <- allG
+# simpAll <- simplify(allG,remove.multiple=TRUE,remove.loops = TRUE, edge.attr.comb = igraph_opt("edge.attr.comb"))
+# g <- simplify(g,remove.multiple=TRUE,remove.loops=TRUE, edge.attr.comb = igraph_opt("edge.attr.comb"))
 
 
 # Save original graph
@@ -80,11 +91,14 @@ oggraph <- g
 g
 
 # Plot graph
-plot(g)
+plot(g, vertex.label = NA)
+
+
 
 # Centralize a graph according to the betweeness of its vertices
 # Outputs centralizations and theoretical max 
 centr_betw(g,directed=TRUE,nobigint=TRUE)
+# centr_betw(simpAll,directed=TRUE,nobigint=TRUE)
 
 # Finding vertex attributes 
 vertex_attr(g)
@@ -99,23 +113,124 @@ E(g)$weight<-rnorm(ecount(g))
 
 E(g)$weight
 
+E(simpAll)$weight <- rnorm(ecount(simpAll))
+E(simpAll)$weight
+
 # Puts weight of vertices into V(g)$weight
 V(g)$weight<-rnorm(vcount(g)) 
 
 V(g)$weight 
 g[1:5,1:9]
 
+V(simpAll)$weight <- rnorm(vcount(simpAll))
+V(simpAll)$weight 
+
 # Plot g 
 plot(g)
 
 # Check if graph is simple
 is.simple(g)
+is.simple(simpAll)
 
-# Copy the vertices with positive weight 
+# Copy the edges/vertices with positive weight 
 # into a subgraph and including the edge weight
 # into plot (next slide)
-sg <- induced.subgraph(g,which(V(g)$weight > 0.1))
+sg <- induced.subgraph(g,which(V(g)$weight > 0.1, E(g)$weight > 0.1))
 sg
+
+
+
+vcount(simpAll)
+# Original v count = 1965206
+ecount(simpAll)
+# Original e count = 5533214
+
+sg1 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.1, E(simpAll)$weight > 0.1))
+sg1
+vcount(sg1)
+
+# sg1 v count = 904402
+ecount(sg1)
+# sg1 e count = 1171628
+
+sg2 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.2, E(simpAll)$weight > 0.2))
+sg2
+vcount(sg2)
+# sg2 v count = 8269246
+ecount(sg2)
+# sg2 e count = 979338
+
+sg3 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.3, E(simpAll)$weight > 0.3))
+sg3
+vcount(sg3)
+# sg3 v count = 750912
+ecount(sg3)
+# sg3 e count = 806630
+
+sg4 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.4, E(simpAll)$weight > 0.4))
+sg4
+vcount(sg4)
+# sg4 v count = 677038
+ecount(sg4)
+# sg4 e count = 655274
+
+sg5 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.5, E(simpAll)$weight > 0.5))
+sg5
+vcount(sg5)
+# sg5 v count = 606737
+ecount(sg5)
+# sg5 e count = 526676
+
+sg6 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.6, E(simpAll)$weight > 0.6))
+sg6
+vcount(sg6)
+# sg6 v count = 539353
+ecount(sg6)
+# sg6 e count = 416078
+
+sg7 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.7, E(simpAll)$weight > 0.7))
+sg7
+vcount(sg7)
+# sg7 v count = 476138
+ecount(sg7)
+# sg6 e count = 324492
+
+sg8 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.8, E(simpAll)$weight > 0.8))
+sg8
+vcount(sg8)
+# sg8 v count = 416808
+ecount(sg8)
+# sg8 e count = 248380
+
+sg9 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.9, E(simpAll)$weight > 0.9))
+sg9
+vcount(sg9)
+# sg9 v count = 362127
+ecount(sg9)
+# sg9 e count = 187172
+
+sg9
+# AS STAR WORKS!!
+# plot(sg9, layout=layout_as_star, vertex.color="green",vertex.label=NA)
+# As circle works too
+# plot(sg9, layout=layout_in_circle, vertex.color="green",vertex.label=NA)
+# As grid works 
+# plot(sg9, layout=layout_on_grid, vertex.color="green",vertex.label=NA)
+
+plot(sg9, layout=layout_components, vertex.color="green",vertex.label=NA)
+
+plot(sg9, layout=layout_on_sphere, vertex.color="green",vertex.label=NA)
+
+plot(sg9, layout=layout_randomly, vertex.color="green",vertex.label=NA)
+
+plot(sg9, layout=layout_with_lgl, vertex.color="green",vertex.label=NA)
+
+plot(simpleGraph, layout=layout_with_graphopt, vertex.color="green",vertex.label=NA)
+
+
+
+
+
 
 # Plot subgraph
 plot(sg,edge.label=round((sg)$weight,3))
@@ -363,6 +478,12 @@ plot(simpleGraph, layout=layout_with_lgl, vertex.color="green",vertex.label=NA)
 
 plot(simpleGraph, layout=layout_with_graphopt, vertex.color="green",vertex.label=NA)
 
+ecount(simplifiedGraph)
+vcount(simplifiedGraph)
+
+oldSimplifiedGraph <- simplifiedGraph
+simplifiedGraph <- sg9
+
 
 
 # 6. Determine the (a) central person(s) in the graph,
@@ -372,51 +493,49 @@ plot(simpleGraph, layout=layout_with_graphopt, vertex.color="green",vertex.label
 
 # Simplified graph aka all data
 centr_degree(simplifiedGraph)$centralization
-# --The central degree is 4.67315 x 10^-6
+# --The central degree is 1.514154 * 10 ^ -5 
 
-# Just first 1000 rows 
-centr_degree(simpleGraph)$centralization
-
-# --The central degree is 0.006173605 
 # Closeness Centrality 
-centr_clo(simpleGraph,mode="all")$centralization
+centr_clo(simplifiedGraph,mode="all")$centralization
+# 1.860223 * 10 ^-10
 
 # 6(b) Longest path
 # Check if graph is connected
-is_connected(simpleGraph)
+is_connected(simplifiedGraph)
+
 
 # It is not connected so unconnected is true
 # The longest path algorithm is NP complete so
 # diameter must refer to the longest path
-diameter(simpleGraph,unconnected=TRUE)
+diameter(simplifiedGraph,unconnected=TRUE)
 
 # The longest path is 37
 
 # 6(c) Largest clique 
 
 # Experimenting with cliques function
-cliques(simpleGraph,min=1,max=NULL)
+cliques(simplifiedGraph,min=1,max=NULL)
 
 # Largest cliques stored here in largestCliques variable
-largestCliques <- max_cliques(simpleGraph,min=1,max=NULL,subset=NULL,file=NULL)
+largestCliques <- max_cliques(simpifiedGraph,min=1,max=NULL,subset=NULL,file=NULL)
 
 largestCliques
 # THe largest clique is of size 3, there are multiple largest cliques
 
 # 6(d) Ego
-ego <- ego(simpleGraph)
+ego <- ego(simplifiedGraph)
 ego
 
 # 6(e) Betweenness centrality and power centrality 
 
 # a. Is there more than one person with the most degrees?
-
+Yes
 # b. Are there multiple longest paths?
-
+Yes
 # c. Are there multiple cliques?
-
+Yes
 # d. Are there more than one person(s) with the highest ego?
-
+Yes
 # e. What is the difference in betweenness centrality vs. 
 # power centrality for the cases you find? Consider 
 # comparing the nodes that are members of each set. 
@@ -426,6 +545,10 @@ ego
 
 # 7. Find the 20 nodes with the greatest neighborhood out to a 
 # distance 3 from the node. DO any of these neighborhoods overlap?
+wc1 <- cluster_walktrap(simpleGraph)
+modularity(wc1)
+membership(wc1)
+sizes(wc1)
 
 # 7a. Build a matrix of 20 nodes with their reachability to the 3rd level
 
