@@ -58,7 +58,7 @@ closeness(ego)
 
 # Get vertices from first column
 v1 <- rows[0:1000,1]
-allV1 <- allRows[0:5533214,1]
+
 
 # Get vertices from second column 
 v2 <- rows[0:1000,2]
@@ -217,23 +217,18 @@ sg9
 # As grid works 
 # plot(sg9, layout=layout_on_grid, vertex.color="green",vertex.label=NA)
 
-plot(sg9, layout=layout_components, vertex.color="green",vertex.label=NA)
+# plot(sg9, layout=layout_components, vertex.color="green",vertex.label=NA)
 
-plot(sg9, layout=layout_on_sphere, vertex.color="green",vertex.label=NA)
+# plot(sg9, layout=layout_on_sphere, vertex.color="green",vertex.label=NA)
 
-plot(sg9, layout=layout_randomly, vertex.color="green",vertex.label=NA)
+# plot(sg9, layout=layout_randomly, vertex.color="green",vertex.label=NA)
 
-plot(sg9, layout=layout_with_lgl, vertex.color="green",vertex.label=NA)
+# plot(sg9, layout=layout_with_lgl, vertex.color="green",vertex.label=NA)
 
-plot(simpleGraph, layout=layout_with_graphopt, vertex.color="green",vertex.label=NA)
-
-
+# plot(simpleGraph, layout=layout_with_graphopt, vertex.color="green",vertex.label=NA)
 
 
 
-
-# Plot subgraph
-plot(sg,edge.label=round((sg)$weight,3))
 
 # Check if subgraph is simple 
 # A graph without loops and multiple edges
@@ -545,10 +540,13 @@ Yes
 
 # 7. Find the 20 nodes with the greatest neighborhood out to a 
 # distance 3 from the node. DO any of these neighborhoods overlap?
+# https://igraph.org/r/doc/communities.html
 wc1 <- cluster_walktrap(simpleGraph)
 modularity(wc1)
 membership(wc1)
 sizes(wc1)
+
+plot(wc1,sg,vertex.size=0.1,layout=layout.fruchterman.reingold)
 
 # 7a. Build a matrix of 20 nodes with their reachability to the 3rd level
 
