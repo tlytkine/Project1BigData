@@ -112,8 +112,61 @@ acg <- alpha_centrality(g,nodes=V(g),alpha=1,loops=FALSE)
 acg
 
 # 5 . 15 functions not in slides (at least)
+# Find triangles in the graph
+#1
+triangles <- count_triangles(simpleGraph)
+triangles
 
+#2
+gsize(simpleGraph)
 
+#3
+# Eccentricity of a vertex is its shortest path 
+# distnace from the farthest other node in the graph
+eccentricity(simpleGraph)
+
+#4
+power_centrality(sg1, exponent=0.9)
+
+#5
+# Largest cliques stored here in largestCliques variable
+largestCliques <- max_cliques(simpleGraph,min=1,max=NULL,subset=NULL,file=NULL)
+
+#6
+# Experimenting with cliques function
+cliques(simpleGraph,min=1,max=NULL)
+
+#7
+neighbors(simpleGraph)
+
+#8
+print.igraph(simpleGraph)
+
+#9
+distances(simpleGraph)
+
+#10
+diameter(simpleGraph)
+
+#11
+degree_distribution(simpleGraph)
+
+#12
+# Show all simple paths from 1 to 5 
+all_simple_paths(simplifiedGraph,1,5)
+
+#13
+edge_connectivity(simpleGraph, source = NULL, target = NULL, checks = TRUE)
+
+#14
+# Head of the edges in a graph 
+head_of(simpleGraph,E(simpleGraph)
+
+#15
+# Tails of the edges in the graph
+tail_of(simpleGraph,E(simpleGraph))
+
+#
 ## simplifiedGraph <- simplify(simplifiedGraph)
 
 
