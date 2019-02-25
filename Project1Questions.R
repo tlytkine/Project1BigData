@@ -72,25 +72,44 @@ simplifiedGraph <- sg9
 
 # 4. 10 Functions in the slides (at least)
 # 1.
+degree(rows)
 
 # 2.
+closeness(ego)
 
 # 3. 
+# Save original graph
+oggraph <- g
+# Show g
+g
+# Plot graph
+plot(g, vertex.label = NA)
 
 # 4.
+centr_betw(g,directed=TRUE,nobigint=TRUE)
 
 # 5. 
+vertex_attr(g)
 
 # 6.
+adjmatrix <- as_adjacency_matrix(g)
+adjmatrix 
 
 # 7.
+is.simple(g)
 
 # 8.
+# Simplify original graph
+simpog <- simplify(oggraph)
 
 # 9. 
+# Page Rank of original graph with weights
+page_rank(g)
 
 # 10.
-
+# Alpha centrality 
+acg <- alpha_centrality(g,nodes=V(g),alpha=1,loops=FALSE)
+acg
 
 # 5 . 15 functions not in slides (at least)
 

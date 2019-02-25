@@ -89,7 +89,6 @@ simpAll <- allG
 oggraph <- g
 # Show g
 g
-
 # Plot graph
 plot(g, vertex.label = NA)
 
