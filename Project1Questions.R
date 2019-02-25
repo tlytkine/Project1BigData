@@ -160,7 +160,7 @@ edge_connectivity(simpleGraph, source = NULL, target = NULL, checks = TRUE)
 
 #14
 # Head of the edges in a graph 
-head_of(simpleGraph,E(simpleGraph)
+head_of(simpleGraph,E(simpleGraph))
 
 #15
 # Tails of the edges in the graph
@@ -260,6 +260,10 @@ wc1 <- cluster_walktrap(sg1)
 modularity(wc1)
 membership(wc1)
 sizes(wc1)
+ecount(sg1)
+vcount(sg1)
+
+vcount(simplifiedGraph)
 
 plot(wc1,sg1,vertex.size=0.1,layout=layout.fruchterman.reingold,vertex.label=NA)
 
@@ -267,17 +271,52 @@ neighbors(simplifiedGraph,4)
 neighbors(simplifiedGraph,100)
 
 
-for(i in 1:100){
+for(i in 1:361638){
+  print(i)
   print(neighbors(simplifiedGraph,i))
 }  
 
+V(simplifiedGraph)$name 
+
+simplifiedGraph.vs.find("395800")
+
+top20 <- sort(sizes(wc1), decreasing = TRUE)[1:20]
+top20
+  
+one <- V(simplifiedGraph)["395800"]
+two <- V(simplifiedGraph)["395917"]
+three <- V(simplifiedGraph)["396021"]
+four <- V(simplifiedGraph)["397035"]
+five <- V(simplifiedGraph)["397068"]
+six <- V(simplifiedGraph)["397074"]
+seven <- V(simplifiedGraph)["397069"]
+eight <- V(simplifiedGraph)["397087"]
+nine <- V(simplifiedGraph)["397075"]
+ten <- V(simplifiedGraph)["397119"]
+eleven <- V(simplifiedGraph)["397272"]
+twelve <- V(simplifiedGraph)["397214"]
+thirteen <- V(simplifiedGraph)["395800"]
+fourteen <- V(simplifiedGraph)["395917"]
+fifteen <- V(simplifiedGraph)["396021"]
+sixteen <- V(simplifiedGraph)["397035"]
+seventeen <- V(simplifiedGraph)["397068"]
+eighteen <- V(simplifiedGraph)["397074"]
+nineteen <- V(simplifiedGraph)["397069"]
+twenty <- V(simplifiedGraph)["397087"]
 
 
 # 7a. Build a matrix of 20 nodes with their reachability to the 3rd level
+m <- matrix(c(one,two,three,four,five,six,seven,eight,nine,ten,eleven,twelve,thirteen,fourteen,fifteen,sixteen,seventeen,eighteen,nineteen,twenty),nrow=4)
+m
+
 
 # 7b. Determine which of the 20 nodes share common nodes, if any, and,
 # for each common node, list the nodes that share that common node.
 
-
+# The following nodes of the 20 nodes share common nodes
+# 395800 395917 396021
+# 397035 397068 397074
+# 397069 397087 397075
+# 397119 397272 397214
 
 
