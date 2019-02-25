@@ -5,11 +5,11 @@ library(sna)
 # Get edges from text file, creates data frame 
 edges1 <- read.table("roadNet-CA.txt")
 
-
 # Convert edges to matrix
 em <-as.matrix(edges1)
 
 # All rows of data 
+rows <- em[0:1000,]
 allRows <- em[0:5533214,]
 
 # Density of rows: 0.7083459
@@ -17,24 +17,33 @@ gden(allRows)
 
 # Get vertices from first column 
 allV1 <- allRows[0:5533214,1]
+v1 <- rows[0:1000,1]
 
 # Get vertices from second column
 allV2 <- allRows[0:5533214,2]
+v2 <- rows[0:1000,2]
 
 # Get Relations 
 allRelations <- data.frame(from=allV1,to=allV2)
+relations <- data.frame(from=v1,to=v2)  
 
 # Get graph data frame 
 allG <- graph.data.frame(allRelations,directed=TRUE)
+g <- graph.data.frame(relations,directed=TRUE)
 simpAll <- allG 
 
 # Put weight of edges into E(simpAll)$weight 
 E(simpAll)$weight <- rnorm(ecount(simpAll))
 E(simpAll)$weight
+E(g)$weight<-rnorm(ecount(g))
+E(g)$weight
 
 # Put weight of vertices into V(simpAll)$weight 
 V(simpAll)$weight<-rnorm(vcount(simpAll)) 
 V(simpAll)$weight 
+V(g)$weight<-rnorm(vcount(g)) 
+V(g)$weight 
+
 
 # Check if graph is simple 
 is.simple(simpAll)
@@ -46,14 +55,47 @@ vcount(simpAll)
 ecount(simpAll)
 
 # Simplify graph 
+
 sg9 <- induced.subgraph(simpAll,which(V(simpAll)$weight > 0.9, E(simpAll)$weight > 0.9))
 sg9
+sg1 <- induced.subgraph(g,which(V(g)$weight > 0.1, E(g)$weight > 0.1))
+sg1
 vcount(sg9)
 # sg9 v count = 362127
 ecount(sg9)
 # sg9 e count = 187172
+vcount(sg1)
+ecount(sg1)
+
 
 simplifiedGraph <- sg9
+
+# 4. 10 Functions in the slides (at least)
+# 1.
+
+# 2.
+
+# 3. 
+
+# 4.
+
+# 5. 
+
+# 6.
+
+# 7.
+
+# 8.
+
+# 9. 
+
+# 10.
+
+
+# 5 . 15 functions not in slides (at least)
+
+
+## simplifiedGraph <- simplify(simplifiedGraph)
 
 
 # 6. Determine the (a) central person(s) in the graph,
@@ -61,51 +103,77 @@ simplifiedGraph <- sg9
 
 # 6(a) Central Person(s) in the graph
 
+
 # Simplified graph aka all data
 centr_degree(simplifiedGraph)$centralization
 # --The central degree is 1.514154 * 10 ^ -5 
 
 # Closeness Centrality 
+closeness(ego)
 centr_clo(simplifiedGraph,mode="all")$centralization
 # 1.860223 * 10 ^-10
 
+# Eigen Centrality 
+eigen_centrality(simplifiedGraph,directed = TRUE,scale = FALSE, weights = E(simplifiedGraph)$weight)
+# The most central node in the graph is node # 361652.
+
+
 # 6(b) Longest path
+all_shortest_paths(sg1,from=1,to=vcount(sg1))
+average.path.length(sg1)
+# The average path length is 1.655172 
+average.path.length(simplifiedGraph)
+# The average path length is 1.5547
+
 # Check if graph is connected
 is_connected(simplifiedGraph)
 
+# The mean distance is 1.549351
+mean_distance(simplifiedGraph)
 
-# It is not connected so unconnected is true
-# The longest path algorithm is NP complete so
-# diameter must refer to the longest path
-diameter(simplifiedGraph,unconnected=TRUE)
 
-# The longest path is 37
 
 # 6(c) Largest clique 
 
 # Experimenting with cliques function
-cliques(simplifiedGraph,min=1,max=NULL)
+cliques <- cliques(sg1,min=1)
 
 # Largest cliques stored here in largestCliques variable
-largestCliques <- max_cliques(simpifiedGraph,min=1,max=NULL,subset=NULL,file=NULL)
+largestCliques <- max_cliques(sg1,min=1,max=NULL,subset=NULL,file=NULL)
 
 largestCliques
-# THe largest clique is of size 3, there are multiple largest cliques
+
+# The largest clique is of size 3, there are multiple largest cliques
 
 # 6(d) Ego
-ego <- ego(simplifiedGraph)
+# ego <- ego(simplifiedGraph)
+# ego
+ego <- ego.extract(rows)
 ego
 
 # 6(e) Betweenness centrality and power centrality 
+betweenness <- betweenness(rows)
+betweenness 
+# The betweenness centrality value is 0.03219316
+
+power_centrality <- power_centrality(sg1, exponent=0.9)
+power_centrality
 
 # a. Is there more than one person with the most degrees?
-Yes
+# Yes
+
 # b. Are there multiple longest paths?
-Yes
+# Yes, there are since there are multiple longest paths in multiple
+# cliques. 
+
+
 # c. Are there multiple cliques?
-Yes
+# Yes, there are 3 cliques. 
+clique_num(simplifiedGraph)
+
+
 # d. Are there more than one person(s) with the highest ego?
-Yes
+# Yes
 # e. What is the difference in betweenness centrality vs. 
 # power centrality for the cases you find? Consider 
 # comparing the nodes that are members of each set. 
@@ -116,12 +184,22 @@ Yes
 # 7. Find the 20 nodes with the greatest neighborhood out to a 
 # distance 3 from the node. DO any of these neighborhoods overlap?
 # https://igraph.org/r/doc/communities.html
-wc1 <- cluster_walktrap(simpleGraph)
+wc1 <- cluster_walktrap(sg1)
 modularity(wc1)
 membership(wc1)
 sizes(wc1)
 
-plot(wc1,sg,vertex.size=0.1,layout=layout.fruchterman.reingold)
+plot(wc1,sg1,vertex.size=0.1,layout=layout.fruchterman.reingold,vertex.label=NA)
+
+neighbors(simplifiedGraph,4)
+neighbors(simplifiedGraph,100)
+
+
+for(i in 1:100){
+  print(neighbors(simplifiedGraph,i))
+}  
+
+
 
 # 7a. Build a matrix of 20 nodes with their reachability to the 3rd level
 
