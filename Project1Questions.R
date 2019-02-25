@@ -67,6 +67,10 @@ ecount(sg9)
 vcount(sg1)
 ecount(sg1)
 
+g <- graph.data.frame(relations,directed=TRUE)
+oggraph <- g
+simpleGraph <- oggraph
+
 
 simplifiedGraph <- sg9
 
@@ -75,6 +79,7 @@ simplifiedGraph <- sg9
 degree(rows)
 
 # 2.
+ego <- ego.extract(rows)
 closeness(ego)
 
 # 3. 
@@ -108,42 +113,43 @@ page_rank(g)
 
 # 10.
 # Alpha centrality 
-acg <- alpha_centrality(g,nodes=V(g),alpha=1,loops=FALSE)
+acg <- alpha_centrality(simplifiedGraph,nodes=V(simplifiedGraph),alpha=1,loops=FALSE)
 acg
 
 # 5 . 15 functions not in slides (at least)
 # Find triangles in the graph
 #1
-triangles <- count_triangles(simpleGraph)
+triangles <- count_triangles(simplifiedGraph)
 triangles
 
 #2
-gsize(simpleGraph)
+gsize(simplifiedGraph)
 
 #3
 # Eccentricity of a vertex is its shortest path 
 # distnace from the farthest other node in the graph
-eccentricity(simpleGraph)
+eccentricity(simplifiedGraph)
 
 #4
 power_centrality(sg1, exponent=0.9)
 
 #5
 # Largest cliques stored here in largestCliques variable
-largestCliques <- max_cliques(simpleGraph,min=1,max=NULL,subset=NULL,file=NULL)
+largestCliques <- max_cliques(sg1,min=1,max=NULL,subset=NULL,file=NULL)
+largestCliques
 
 #6
 # Experimenting with cliques function
-cliques(simpleGraph,min=1,max=NULL)
+cliques(sg1,min=1,max=NULL)
 
 #7
-neighbors(simpleGraph)
+neighbors(sg1,2)
 
 #8
-print.igraph(simpleGraph)
+print.igraph(sg1)
 
 #9
-distances(simpleGraph)
+distances(g)
 
 #10
 diameter(simpleGraph)
@@ -153,10 +159,10 @@ degree_distribution(simpleGraph)
 
 #12
 # Show all simple paths from 1 to 5 
-all_simple_paths(simplifiedGraph,1,5)
+all_simple_paths(g,1,5)
 
 #13
-edge_connectivity(simpleGraph, source = NULL, target = NULL, checks = TRUE)
+edge_connectivity(g, source = NULL, target = NULL, checks = TRUE)
 
 #14
 # Head of the edges in a graph 
@@ -278,7 +284,7 @@ for(i in 1:361638){
 
 V(simplifiedGraph)$name 
 
-simplifiedGraph.vs.find("395800")
+# simplifiedGraph.vs.find("395800")
 
 top20 <- sort(sizes(wc1), decreasing = TRUE)[1:20]
 top20
